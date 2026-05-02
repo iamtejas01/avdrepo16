@@ -6,14 +6,9 @@ pipeline {
     }
 
     stages {
-        stage('Checkout Code') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
+                bat '"%PYTHON%" -m pip install --upgrade pip'
                 bat '"%PYTHON%" -m pip install --upgrade pandas python-dateutil pytz numpy'
             }
         }
@@ -21,6 +16,13 @@ pipeline {
         stage('Show Python Version') {
             steps {
                 bat '"%PYTHON%" --version'
+                bat '"%PYTHON%" -m pip --version'
+            }
+        }
+
+        stage('Test Pandas') {
+            steps {
+                bat '"%PYTHON%" -c "import pandas as pd; print(pd.__version__)"'
             }
         }
 
